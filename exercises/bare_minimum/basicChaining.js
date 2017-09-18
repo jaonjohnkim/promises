@@ -12,7 +12,7 @@ var fs = require('fs');
 var Promise = require('bluebird');
 var request = require('request');
 var promisification = require('./promisification.js');
-
+// var promiseConstructor = require('./promiseConstructor.js');
 
 var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
   return new Promise((resolve, reject) => {
@@ -21,13 +21,7 @@ var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
         reject(err);
       } else {
         var username = file.toString().split('\n')[0];
-        var promise = new Promise((resolve) => {
-          resolve(promisification.getGitHubProfileAsync(username));
-        });
-        
-        promise.then((profile) => {
-          // console.log('arguments', arguments);
-          console.log('profile', profile);
+        promisification.getGitHubProfileAsync(username).then((profile) => {
           fs.writeFile(writeFilePath, JSON.stringify(profile), 'utf8', (err) => {
             if (err) {
               console.log('error in writing');
@@ -38,12 +32,21 @@ var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
             }
           });
         });
-        
-        // return new Promise((resolve, reject) => {
-        // });
       }
     });
   });
+  
+  // return promiseConstructor.pluckFirstLineFromFileAsync(readFilePath).then((username) => {
+  //   promisification.getGitHubProfileAsync(username).then((profile) => {
+  //     fs.writeFile(writeFilePath, JSON.stringify(profile), 'utf8', (err) => {
+  //       if (err) {
+  //         console.log('error in writing');
+  //       } else {
+  //         console.log('success in writing');
+  //       }
+  //     });
+  //   });
+  // });
 };
 
 // Export these functions so we can test them
