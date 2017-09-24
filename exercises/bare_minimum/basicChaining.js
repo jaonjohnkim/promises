@@ -12,41 +12,14 @@ var fs = require('fs');
 var Promise = require('bluebird');
 var request = require('request');
 var promisification = require('./promisification.js');
-// var promiseConstructor = require('./promiseConstructor.js');
+var promiseConstructor = require('./promiseConstructor.js');
 
 var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
-  return new Promise((resolve, reject) => {
-    fs.readFile(readFilePath, (err, file) => {
-      if (err) {
-        reject(err);
-      } else {
-        var username = file.toString().split('\n')[0];
-        promisification.getGitHubProfileAsync(username).then((profile) => {
-          fs.writeFile(writeFilePath, JSON.stringify(profile), 'utf8', (err) => {
-            if (err) {
-              console.log('error in writing');
-              reject(err);
-            } else {
-              console.log('success in writing');
-              resolve();
-            }
-          });
-        });
-      }
-    });
-  });
-  
-  // return promiseConstructor.pluckFirstLineFromFileAsync(readFilePath).then((username) => {
-  //   promisification.getGitHubProfileAsync(username).then((profile) => {
-  //     fs.writeFile(writeFilePath, JSON.stringify(profile), 'utf8', (err) => {
-  //       if (err) {
-  //         console.log('error in writing');
-  //       } else {
-  //         console.log('success in writing');
-  //       }
-  //     });
-  //   });
-  // });
+  return promiseConstructor.pluckFirstLineFromFileAsync(readFilePath)
+  .then(promisification.getGitHubProfileAsync)
+  .then((response) => {
+    return Promise.promisify(fs.writeFile)(writeFilePath, JSON.stringify(response));
+  }); 
 };
 
 // Export these functions so we can test them

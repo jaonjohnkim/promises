@@ -8,12 +8,15 @@
  *    4. Writes the new file to the file located at `writePath`
  */
 
-
 var combineFirstLineOfManyFiles = function(filePaths, writePath) {
- // TODO
+  
 };
 
 // Export these functions so we can unit test them
 module.exports = {
   combineFirstLineOfManyFiles: combineFirstLineOfManyFiles
 };
+
+1  2  3  4   5    6    7  8   9  10   11 12 13   14   15  16
+B  t  K  t   t    t    K  t   B  t B  K  t  t    t    K   t
+   my    ivi name name    tiP            is John John  

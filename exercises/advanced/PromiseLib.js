@@ -1,6 +1,5 @@
 // You should only use the `new Promise` constructor from bluebird
 var Promise = require('bluebird');
-
 /**
  * Return a function that wraps `nodeStyleFn`. When the returned function is invoked,
  * it will return a promise which will be resolved or rejected, depending on 
@@ -18,7 +17,6 @@ var promisify = function(nodeStyleFn) {
  // TODO
 };
 
-
 /**
  * Given an array which contains promises, return a promise that is
  * resolved if and when all the items in the array are resolved.
@@ -33,7 +31,6 @@ var promisify = function(nodeStyleFn) {
 var all = function(arrayOfPromises) {
   // TODO
 };
-
 
 /**
  * Given an array of promises, return a promise that is resolved or rejected,
